@@ -559,6 +559,93 @@ const AdminDashboard = () => {
         />
       </Card>
 
+       <Card>
+        <div className="px-6 py-4 border-b border-gray-200">
+          <h2 className="text-lg font-semibold text-gray-900">All Organizations</h2>
+          <p className="text-sm text-gray-600">Complete list of registered organizations</p>
+          
+          {/* Filters and Search */}
+          <div className="mt-4 grid grid-cols-1 md:grid-cols-4 gap-4">
+            {/* Search by name */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Search by Name
+              </label>
+              <input
+                type="text"
+                placeholder="Organization name..."
+                value={filters.searchName}
+                onChange={(e) => setFilters(prev => ({ ...prev, searchName: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            {/* Filter by status */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Filter by Status
+              </label>
+              <select
+                value={filters.status}
+                onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {orgStatuses.map(status => (
+                  <option key={status.value} value={status.value}>
+                    {status.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Date from */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                From Date
+              </label>
+              <input
+                type="date"
+                value={filters.dateFrom}
+                onChange={(e) => setFilters(prev => ({ ...prev, dateFrom: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            {/* Date to */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                To Date
+              </label>
+              <input
+                type="date"
+                value={filters.dateTo}
+                onChange={(e) => setFilters(prev => ({ ...prev, dateTo: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+
+          {/* Clear filters button */}
+          <div className="mt-4">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setFilters({ status: 'ALL', dateFrom: '', dateTo: '', searchName: '' })}
+            >
+              Clear Filters
+            </Button>
+            <span className="ml-4 text-sm text-gray-600">
+              Showing {filteredOrganizations.length} of {organizations.length} organizations
+            </span>
+          </div>
+        </div>
+        <Table
+          columns={allOrgColumns}
+          data={filteredOrganizations}
+          loading={loading}
+        />
+      </Card>
+
       {/* Modals */}
       <Modal isOpen={showModal} onClose={() => setShowModal(false)} size={modalType === 'view' || modalType === 'edit' ? 'lg' : 'md'}>
         <div className="p-6">
